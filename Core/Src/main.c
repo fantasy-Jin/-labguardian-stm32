@@ -101,24 +101,23 @@ static uint8_t modify_mode = 0; // 0: Normal, 1: Temp, 2: Hum
 static int t_alert = 0;
 static int h_alert = 0;
 
-char mqtt_payload[512]; // Global buffer for MQTT publish
-char display_buffer[32]; // Global buffer for display formatting
-char modify_buffer[32];  // Global buffer for modify interface
+char mqtt_payload[512];                     // Global buffer for MQTT publish
+char display_buffer[32];                    // Global buffer for display formatting
+char modify_buffer[32];                     // Global buffer for modify interface
 uint8_t key1_state, key2_state, key3_state; // Key scan states
 
-void Display_Modify_Interface(uint8_t mode) {
+void Display_Modify_Interface(uint8_t mode)
+{
     OLED_ShowString(1, 1, "Modify Alert");
-    
+
     snprintf(modify_buffer, sizeof(modify_buffer), "%sTemp: %d", (mode == 1 ? ">" : " "), sys_config.tem_alert);
     OLED_ShowString(2, 1, modify_buffer);
-    
+
     snprintf(modify_buffer, sizeof(modify_buffer), "%sHum : %d", (mode == 2 ? ">" : " "), sys_config.hum_alert);
     OLED_ShowString(3, 1, modify_buffer);
-    
+
     OLED_ShowString(4, 1, "Save:Lng K1");
 }
-
-
 
 /* USER CODE END PV */
 
@@ -152,40 +151,40 @@ void Build_MQTT_Topics(void)
 }
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
+ * @brief  The application entry point.
+ * @retval int
+ */
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
+    /* USER CODE BEGIN 1 */
 
-  /* USER CODE END 1 */
+    /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+    /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
 
-  /* USER CODE BEGIN Init */
+    /* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+    /* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+    /* Configure the system clock */
+    SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
+    /* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
+    /* USER CODE END SysInit */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_ADC1_Init();
- // MX_I2C1_Init();
-  MX_USART1_UART_Init();
-  MX_USART2_UART_Init();
-  MX_TIM3_Init();
-  /* USER CODE BEGIN 2 */
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();
+    MX_ADC1_Init();
+    // MX_I2C1_Init();
+    MX_USART1_UART_Init();
+    MX_USART2_UART_Init();
+    MX_TIM3_Init();
+    /* USER CODE BEGIN 2 */
     Soft_I2C_Init();
     SHT30_Init(&hi2c1);
     BH1750_Init(&hi2c1);
@@ -202,7 +201,8 @@ int main(void)
     printf("=== WIFI init ok  ===\r\n");
     if (WIFI_STA_Connect())
     {
-        if(wifi_connected_flag){
+        if (wifi_connected_flag)
+        {
             OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
         }
         if (WIFI_MQTT_Connect())
@@ -217,10 +217,10 @@ int main(void)
         }
     }
 
-  /* USER CODE END 2 */
+    /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
 
     while (1)
     {
@@ -241,7 +241,8 @@ int main(void)
         {
             lastDataSend = HAL_GetTick();
             Send_Data_to_OneNet();
-            if (modify_mode == 0) Display_Sensor_Data();
+            if (modify_mode == 0)
+                Display_Sensor_Data();
         }
 
         // 4. Handle MQTT disconnections
@@ -254,10 +255,11 @@ int main(void)
                 printf("[MQTT] Lost connection, retrying...\r\n");
                 WIFI_MQTT_Connect();
             }
-        }else{
-            
         }
-        
+        else
+        {
+        }
+
         // 5. Security Mode & Config Logic
         key1_state = Key_Scan(key1_GPIO_Port, key1_Pin);
         key2_state = Key_Scan(key2_GPIO_Port, key2_Pin);
@@ -266,56 +268,65 @@ int main(void)
         if (modify_mode == 0)
         {
             // Normal Mode
-            if(key1_state == KEY_SHORT_PRESS) // Enable Security
+            if (key1_state == KEY_SHORT_PRESS) // Enable Security
             {
                 security_mode = 1;
                 OLED_Show16x16Icon(0, 48, security_icon_16x16); // Show icon at bottom left
                 printf("Security Mode ON\r\n");
             }
-            else if(key1_state == KEY_LONG_PRESS) // Enter Config Mode
+            else if (key1_state == KEY_LONG_PRESS) // Enter Config Mode
             {
-                 printf("Enter Config Mode...\r\n");
-                 OLED_Clear();
-                 OLED_ShowString(1, 1, "Config Mode");
-                 OLED_ShowString(2, 1, "SSID:STM32_Cfg");
-                 OLED_ShowString(3, 1, "IP:192.168.4.1");
-                 WIFI_Start_AP("STM32_Config", "12345678");
-                 WIFI_Start_Server(8080);
-                 while(1) { // Stuck in config mode until reboot
-                     Process_WIFI_RX();
-                     HAL_Delay(10);
-                 }
+                printf("Enter Config Mode...\r\n");
+                OLED_Clear();
+                OLED_ShowString(1, 1, "Config Mode");
+                OLED_ShowString(2, 1, "SSID:STM32_Cfg");
+                OLED_ShowString(3, 1, "IP:192.168.4.1");
+                WIFI_Start_AP("STM32_Config", "12345678");
+                WIFI_Start_Server(8080);
+                while (1)
+                { // Stuck in config mode until reboot
+                    Process_WIFI_RX();
+                    HAL_Delay(10);
+                }
             }
 
-            if(key2_state == KEY_SHORT_PRESS) // Disable Security
+            if (key2_state == KEY_SHORT_PRESS) // Disable Security
             {
                 security_mode = 0;
                 OLED_Show16x16Icon(0, 48, blank_icon_16x16); // Clear icon
-                Buzzer_Off(); // Stop alarm if ringing
+                Buzzer_Off();                                // Stop alarm if ringing
                 printf("Security Mode OFF\r\n");
             }
-            
+
             if (key3_state == KEY_LONG_PRESS) // Enter Alert Modify Mode
             {
                 modify_mode = 1;
                 OLED_Clear();
                 printf("Enter Alert Modify Mode\r\n");
             }
-            
+
             // Alert Logic
-            if (env.temperature > sys_config.tem_alert || env.humidity > sys_config.hum_alert)
+            if (env.temperature > sys_config.tem_alert)
             {
                 // Simple Alert Trigger
-                 if (GetBuzzerStatus() == 0) {
-									  //Buzzer_On();
-									 
-									printf("temp=%d, hum=%d, tem_alert=%d, hum_alert=%d\r\n",
-									(int)env.temperature,
-									(int) env.humidity,
-									sys_config.tem_alert,
-									sys_config.hum_alert);
-									
-								 }
+                if (GetBuzzerStatus() == 0)
+                { // 温度超出的操作
+                    // Buzzer_On();
+
+                    printf("temp=%d, tem_alert=%d\r\n",
+                           (int)env.temperature,
+                           sys_config.tem_alert);
+                }
+            }
+            if (env.humidity > sys_config.hum_alert)
+            {
+                if (GetBuzzerStatus() == 0)
+                {
+                    // 湿度超出的操作
+                    printf("hum=%d, hum_alert=%d\r\n",
+                           (int)env.humidity,
+                           sys_config.hum_alert);
+                }
             }
         }
         else
@@ -323,10 +334,15 @@ int main(void)
             // Modify Mode
             if (key1_state == KEY_SHORT_PRESS)
             {
-                if (modify_mode == 1) {
-                    if (sys_config.tem_alert < 100) sys_config.tem_alert++;
-                } else {
-                    if (sys_config.hum_alert < 100) sys_config.hum_alert++;
+                if (modify_mode == 1)
+                {
+                    if (sys_config.tem_alert < 100)
+                        sys_config.tem_alert++;
+                }
+                else
+                {
+                    if (sys_config.hum_alert < 100)
+                        sys_config.hum_alert++;
                 }
             }
             else if (key1_state == KEY_LONG_PRESS)
@@ -338,47 +354,54 @@ int main(void)
                 HAL_Delay(1000);
                 OLED_Clear();
                 // Restore status icons
-                if(wifi_connected_flag) OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
-                if(mqtt_connected_flag) OLED_Show16x16Icon(90, 48, mqtt_icon_16x16);
-                if(security_mode) OLED_Show16x16Icon(0, 48, security_icon_16x16);
+                if (wifi_connected_flag)
+                    OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
+                if (mqtt_connected_flag)
+                    OLED_Show16x16Icon(90, 48, mqtt_icon_16x16);
+                if (security_mode)
+                    OLED_Show16x16Icon(0, 48, security_icon_16x16);
                 Display_Sensor_Data(); // Immediately refresh display
-                lastDataSend = 0; // Force immediate display update
+                lastDataSend = 0;      // Force immediate display update
             }
-            
+
             if (key2_state == KEY_SHORT_PRESS)
             {
-                if (modify_mode == 1) {
-                    if (sys_config.tem_alert > 1) sys_config.tem_alert--;
-                } else {
-                    if (sys_config.hum_alert > 1) sys_config.hum_alert--;
+                if (modify_mode == 1)
+                {
+                    if (sys_config.tem_alert > 1)
+                        sys_config.tem_alert--;
+                }
+                else
+                {
+                    if (sys_config.hum_alert > 1)
+                        sys_config.hum_alert--;
                 }
             }
-            
+
             if (key3_state == KEY_SHORT_PRESS)
             {
                 modify_mode = (modify_mode == 1) ? 2 : 1;
             }
-            
+
             Display_Modify_Interface(modify_mode);
         }
 
-        if(security_mode)
+        if (security_mode)
         {
             // Check Door Sensor (Active High or Low? Assuming High trigger based on typical modules, but checking logic)
             // Usually Door sensor: Magnet near = Low, Magnet far = High. Alarm on Open (High).
             // Check PIR: High = Motion.
-            if(HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin) == GPIO_PIN_SET || PIR_IsHumanDetected())
+            if (HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin) == GPIO_PIN_SET || PIR_IsHumanDetected())
             {
                 Buzzer_On();
-							  printf("[DEBUG] isBuzzer_On door_value: %d, Human: %d\r\n", HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin), PIR_IsHumanDetected());
-			
+                printf("[DEBUG] isBuzzer_On door_value: %d, Human: %d\r\n", HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin), PIR_IsHumanDetected());
             }
             else
             {
                 // Optional: Auto turn off buzzer if sensors clear? Or latch?
                 // User request says "if reaction then alarm". Usually implies latching or continuous while active.
                 // Let's keep it simple: if active -> beep. If not active -> silence (unless latched, but simple is better for now).
-                // Wait, if I just turn it on, it stays on. I should probably allow it to turn off if sensors are clear, 
+                // Wait, if I just turn it on, it stays on. I should probably allow it to turn off if sensors are clear,
                 // OR require manual reset. "If reaction then alarm" -> usually alarm stays until reset.
                 // But for simple driver:
                 // Let's make it: Sensor Active -> Buzzer On. Sensor Inactive -> Buzzer Off (or stay on?).
@@ -391,60 +414,59 @@ int main(void)
                 // I'll leave it as: Trigger -> On. Key2 -> Off.
             }
         }
-        
+
         HAL_Delay(100);
 
-    /* USER CODE END WHILE */
+        /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
+        /* USER CODE BEGIN 3 */
     }
-  /* USER CODE END 3 */
+    /* USER CODE END 3 */
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+ * @brief System Clock Configuration
+ * @retval None
+ */
 void SystemClock_Config(void)
 {
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+    RCC_OscInitTypeDef RCC_OscInitStruct = {0};
+    RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+    RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    /** Initializes the RCC Oscillators according to the specified parameters
+     * in the RCC_OscInitTypeDef structure.
+     */
+    RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+    RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+    RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+    RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+    RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+    RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+    RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    {
+        Error_Handler();
+    }
 
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
+    /** Initializes the CPU, AHB and APB buses clocks
+     */
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
-  PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
-  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
-  {
-    Error_Handler();
-  }
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+    {
+        Error_Handler();
+    }
+    PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+    PeriphClkInit.AdcClockSelection = RCC_ADCPCLK2_DIV6;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+    {
+        Error_Handler();
+    }
 }
 
 /* USER CODE BEGIN 4 */
@@ -509,18 +531,17 @@ void Send_Data_to_OneNet(void)
              "}}",
              (int)env.temperature,
              (int)env.humidity,
-             (buzzer ? "true" : "false"), 
-             (led ? "true" : "false"),    
+             (buzzer ? "true" : "false"),
+             (led ? "true" : "false"),
              (int)gas_v,
              (int)lux,
              (human ? "true" : "false"),
-             HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin) == GPIO_PIN_SET? "true" : "false",
+             HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin) == GPIO_PIN_SET ? "true" : "false",
              (GetRelayState(1) ? "true" : "false"),
              (GetRelayState(2) ? "true" : "false"),
              security_mode ? "true" : "false",
              sys_config.tem_alert,
-             sys_config.hum_alert
-             );
+             sys_config.hum_alert);
 
     WIFI_MQTT_Publish(MQTT_TOPIC_POST, mqtt_payload, 0);
     printf("Payload: %s\r\n", mqtt_payload);
@@ -596,7 +617,7 @@ void Process_OneNet_Command(MQTT_MESSAGE *msg)
 
     *params_end = '}';
 
-    //printf("[DEBUG] led_value: %d, security: %d\r\n", led_value, security_val);
+    // printf("[DEBUG] led_value: %d, security: %d\r\n", led_value, security_val);
 
     if (security_val >= 0)
     {
@@ -635,55 +656,66 @@ void Process_OneNet_Command(MQTT_MESSAGE *msg)
         if (led_value == 1)
         {
             LedOn();
-           // printf("LED on\r\n");
+            // printf("LED on\r\n");
         }
         else
         {
             LedOff();
-            //printf("LED off\r\n");
+            // printf("LED off\r\n");
         }
     }
     // ProcessRelayCommands(relay1_value,relay2_value);
     if (relay1_value >= 0)
     {
-			if(relay1_value == 1){
-				Relay1_On();
-			} else{
-				Relay1_Off();
-			}
-        //Relay_Control(1, relay1_value);
+        if (relay1_value == 1)
+        {
+            Relay1_On();
+        }
+        else
+        {
+            Relay1_Off();
+        }
+        // Relay_Control(1, relay1_value);
     }
 
     if (relay2_value >= 0)
     {
-			if(relay2_value == 1){
-				Relay2_On();
-			} else{
-				Relay2_Off();
-			}
+        if (relay2_value == 1)
+        {
+            Relay2_On();
+        }
+        else
+        {
+            Relay2_Off();
+        }
     }
 
     if (t_alert > 0)
     {
         // Limit to 1-100 range for OneNet platform compatibility
-        if (t_alert >= 1 && t_alert <= 100) {
+        if (t_alert >= 1 && t_alert <= 100)
+        {
             sys_config.tem_alert = t_alert;
             printf("Set tem_alert: %d\r\n", t_alert);
-        } else {
+        }
+        else
+        {
             printf("Invalid tem_alert: %d (must be 1-100)\r\n", t_alert);
         }
     }
     if (h_alert > 0)
     {
         // Limit to 1-100 range for OneNet platform compatibility
-        if (h_alert >= 1 && h_alert <= 100) {
+        if (h_alert >= 1 && h_alert <= 100)
+        {
             sys_config.hum_alert = h_alert;
             printf("Set hum_alert: %d\r\n", h_alert);
-        } else {
+        }
+        else
+        {
             printf("Invalid hum_alert: %d (must be 1-100)\r\n", h_alert);
         }
     }
- 
 
     char reply_payload[128];
     snprintf(reply_payload, sizeof(reply_payload),
@@ -723,14 +755,17 @@ void Display_Sensor_Data(void)
     // Display light
     snprintf(display_buffer, sizeof(display_buffer), "L:%dLux       ", (int)lux);
     OLED_ShowString(3, 1, display_buffer);
-    
+
     // Clear Line 4 - 11 chars to remove "Save:Lng K1" (88px, still preserves icons at X=90+)
     OLED_ShowString(4, 1, "           ");
-    
+
     // Restore status icons after clearing
-    if(security_mode) OLED_Show16x16Icon(0, 48, security_icon_16x16);
-    if(wifi_connected_flag) OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
-    if(mqtt_connected_flag) OLED_Show16x16Icon(90, 48, mqtt_icon_16x16);
+    if (security_mode)
+        OLED_Show16x16Icon(0, 48, security_icon_16x16);
+    if (wifi_connected_flag)
+        OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
+    if (mqtt_connected_flag)
+        OLED_Show16x16Icon(90, 48, mqtt_icon_16x16);
 }
 
 void extract_json_string(const char *json, const char *key, char *out_buf, size_t max_len)
@@ -745,7 +780,8 @@ void extract_json_string(const char *json, const char *key, char *out_buf, size_
         if (end)
         {
             size_t len = end - start;
-            if (len >= max_len) len = max_len - 1;
+            if (len >= max_len)
+                len = max_len - 1;
             strncpy(out_buf, start, len);
             out_buf[len] = '\0';
         }
@@ -756,20 +792,20 @@ void Process_Config_Data(char *data)
 {
     printf("[Config] Received: %s\r\n", data);
     // Expected: {"ssid":"...","pwd":"...","id":"...","key":"..."}
-    
+
     char ssid[32] = {0};
     char pwd[64] = {0};
     char pid[32] = {0};
     char id[32] = {0};
     char key[256] = {0};
-    
+
     extract_json_string(data, "ssid", ssid, sizeof(ssid));
     extract_json_string(data, "pwd", pwd, sizeof(pwd));
     extract_json_string(data, "pid", pid, sizeof(pid));
     extract_json_string(data, "id", id, sizeof(id));
     extract_json_string(data, "key", key, sizeof(key));
-    
-    if(strlen(ssid) > 0 && strlen(pwd) > 0)
+
+    if (strlen(ssid) > 0 && strlen(pwd) > 0)
     {
         printf("[Config] Saving...\r\n");
         memset(&sys_config, 0, sizeof(sys_config));
@@ -778,9 +814,9 @@ void Process_Config_Data(char *data)
         strcpy(sys_config.onenet_product_id, pid);
         strcpy(sys_config.onenet_id, id);
         strcpy(sys_config.onenet_key, key);
-        
+
         Flash_Write_Config(&sys_config);
-        
+
         OLED_Clear();
         OLED_ShowString(1, 1, "Config Saved!");
         OLED_ShowString(2, 1, "Rebooting...");
@@ -792,32 +828,32 @@ void Process_Config_Data(char *data)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
 void Error_Handler(void)
 {
-  /* USER CODE BEGIN Error_Handler_Debug */
+    /* USER CODE BEGIN Error_Handler_Debug */
     __disable_irq();
     while (1)
     {
     }
-  /* USER CODE END Error_Handler_Debug */
+    /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
-  /* USER CODE BEGIN 6 */
+    /* USER CODE BEGIN 6 */
     /* User can add his own implementation to report the file name and line number,
        ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-  /* USER CODE END 6 */
+    /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */

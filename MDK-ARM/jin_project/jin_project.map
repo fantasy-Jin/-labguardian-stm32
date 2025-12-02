@@ -2194,24 +2194,24 @@ Image Symbol Table
     i.fputc                                  0x08004628   Section        0  usart.o(i.fputc)
     i.get_param_value                        0x08004640   Section        0  main.o(i.get_param_value)
     i.main                                   0x080046c4   Section        0  main.o(i.main)
-    .constdata                               0x08004bc4   Section       32  oled_s.o(.constdata)
-    .constdata                               0x08004be4   Section       32  oled_s.o(.constdata)
-    .constdata                               0x08004c04   Section       32  oled_s.o(.constdata)
-    .constdata                               0x08004c24   Section       32  oled_s.o(.constdata)
-    .constdata                               0x08004c44   Section     1520  oled_s.o(.constdata)
-    .constdata                               0x08005234   Section       32  main.o(.constdata)
-    .constdata                               0x08005254   Section       18  stm32f1xx_hal_rcc.o(.constdata)
-    aPredivFactorTable                       0x08005254   Data           2  stm32f1xx_hal_rcc.o(.constdata)
-    aPLLMULFactorTable                       0x08005256   Data          16  stm32f1xx_hal_rcc.o(.constdata)
-    .constdata                               0x08005266   Section       18  stm32f1xx_hal_rcc_ex.o(.constdata)
-    aPredivFactorTable                       0x08005266   Data           2  stm32f1xx_hal_rcc_ex.o(.constdata)
-    aPLLMULFactorTable                       0x08005268   Data          16  stm32f1xx_hal_rcc_ex.o(.constdata)
-    .constdata                               0x08005278   Section       16  system_stm32f1xx.o(.constdata)
-    .constdata                               0x08005288   Section        8  system_stm32f1xx.o(.constdata)
-    .constdata                               0x08005290   Section      129  ctype_o.o(.constdata)
-    .constdata                               0x08005314   Section        4  ctype_o.o(.constdata)
-    table                                    0x08005314   Data           4  ctype_o.o(.constdata)
-    .conststring                             0x08005318   Section      300  main.o(.conststring)
+    .constdata                               0x08004bcc   Section       32  oled_s.o(.constdata)
+    .constdata                               0x08004bec   Section       32  oled_s.o(.constdata)
+    .constdata                               0x08004c0c   Section       32  oled_s.o(.constdata)
+    .constdata                               0x08004c2c   Section       32  oled_s.o(.constdata)
+    .constdata                               0x08004c4c   Section     1520  oled_s.o(.constdata)
+    .constdata                               0x0800523c   Section       32  main.o(.constdata)
+    .constdata                               0x0800525c   Section       18  stm32f1xx_hal_rcc.o(.constdata)
+    aPredivFactorTable                       0x0800525c   Data           2  stm32f1xx_hal_rcc.o(.constdata)
+    aPLLMULFactorTable                       0x0800525e   Data          16  stm32f1xx_hal_rcc.o(.constdata)
+    .constdata                               0x0800526e   Section       18  stm32f1xx_hal_rcc_ex.o(.constdata)
+    aPredivFactorTable                       0x0800526e   Data           2  stm32f1xx_hal_rcc_ex.o(.constdata)
+    aPLLMULFactorTable                       0x08005270   Data          16  stm32f1xx_hal_rcc_ex.o(.constdata)
+    .constdata                               0x08005280   Section       16  system_stm32f1xx.o(.constdata)
+    .constdata                               0x08005290   Section        8  system_stm32f1xx.o(.constdata)
+    .constdata                               0x08005298   Section      129  ctype_o.o(.constdata)
+    .constdata                               0x0800531c   Section        4  ctype_o.o(.constdata)
+    table                                    0x0800531c   Data           4  ctype_o.o(.constdata)
+    .conststring                             0x08005320   Section      300  main.o(.conststring)
     .data                                    0x20000000   Section        3  bh1750.o(.data)
     cmd                                      0x20000000   Data           1  bh1750.o(.data)
     rx_buf                                   0x20000001   Data           2  bh1750.o(.data)
@@ -2566,17 +2566,17 @@ Image Symbol Table
     extract_json_string                      0x080045d1   Thumb Code    78  main.o(i.extract_json_string)
     fputc                                    0x08004629   Thumb Code    20  usart.o(i.fputc)
     get_param_value                          0x08004641   Thumb Code   108  main.o(i.get_param_value)
-    main                                     0x080046c5   Thumb Code   836  main.o(i.main)
-    wifi_icon_16x16                          0x08004bc4   Data          32  oled_s.o(.constdata)
-    mqtt_icon_16x16                          0x08004be4   Data          32  oled_s.o(.constdata)
-    security_icon_16x16                      0x08004c04   Data          32  oled_s.o(.constdata)
-    blank_icon_16x16                         0x08004c24   Data          32  oled_s.o(.constdata)
-    OLED_F8x16                               0x08004c44   Data        1520  oled_s.o(.constdata)
-    AHBPrescTable                            0x08005278   Data          16  system_stm32f1xx.o(.constdata)
-    APBPrescTable                            0x08005288   Data           8  system_stm32f1xx.o(.constdata)
-    __ctype_table                            0x08005290   Data         129  ctype_o.o(.constdata)
-    Region$$Table$$Base                      0x08005444   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x08005464   Number         0  anon$$obj.o(Region$$Table)
+    main                                     0x080046c5   Thumb Code   842  main.o(i.main)
+    wifi_icon_16x16                          0x08004bcc   Data          32  oled_s.o(.constdata)
+    mqtt_icon_16x16                          0x08004bec   Data          32  oled_s.o(.constdata)
+    security_icon_16x16                      0x08004c0c   Data          32  oled_s.o(.constdata)
+    blank_icon_16x16                         0x08004c2c   Data          32  oled_s.o(.constdata)
+    OLED_F8x16                               0x08004c4c   Data        1520  oled_s.o(.constdata)
+    AHBPrescTable                            0x08005280   Data          16  system_stm32f1xx.o(.constdata)
+    APBPrescTable                            0x08005290   Data           8  system_stm32f1xx.o(.constdata)
+    __ctype_table                            0x08005298   Data         129  ctype_o.o(.constdata)
+    Region$$Table$$Base                      0x0800544c   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0800546c   Number         0  anon$$obj.o(Region$$Table)
     WIFI_RX_FLAG                             0x20000004   Data           1  bsp_esp01s.o(.data)
     wifi_connected_flag                      0x20000005   Data           1  bsp_esp01s.o(.data)
     mqtt_connected_flag                      0x20000006   Data           1  bsp_esp01s.o(.data)
@@ -2616,9 +2616,9 @@ Memory Map of the image
 
   Image Entry point : 0x080000ed
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000054d0, Max: 0x00010000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000054d8, Max: 0x00010000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x00005464, Max: 0x00010000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000546c, Max: 0x00010000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -2851,38 +2851,38 @@ Memory Map of the image
     0x080045d0   0x080045d0   0x00000058   Code   RO          757    i.extract_json_string  main.o
     0x08004628   0x08004628   0x00000018   Code   RO         1030    i.fputc             usart.o
     0x08004640   0x08004640   0x00000084   Code   RO          758    i.get_param_value   main.o
-    0x080046c4   0x080046c4   0x00000500   Code   RO          759    i.main              main.o
-    0x08004bc4   0x08004bc4   0x00000020   Data   RO          636    .constdata          oled_s.o
-    0x08004be4   0x08004be4   0x00000020   Data   RO          637    .constdata          oled_s.o
-    0x08004c04   0x08004c04   0x00000020   Data   RO          638    .constdata          oled_s.o
-    0x08004c24   0x08004c24   0x00000020   Data   RO          639    .constdata          oled_s.o
-    0x08004c44   0x08004c44   0x000005f0   Data   RO          640    .constdata          oled_s.o
-    0x08005234   0x08005234   0x00000020   Data   RO          762    .constdata          main.o
-    0x08005254   0x08005254   0x00000012   Data   RO         1752    .constdata          stm32f1xx_hal_rcc.o
-    0x08005266   0x08005266   0x00000012   Data   RO         1844    .constdata          stm32f1xx_hal_rcc_ex.o
-    0x08005278   0x08005278   0x00000010   Data   RO         4316    .constdata          system_stm32f1xx.o
-    0x08005288   0x08005288   0x00000008   Data   RO         4317    .constdata          system_stm32f1xx.o
-    0x08005290   0x08005290   0x00000081   Data   RO         4707    .constdata          mc_w.l(ctype_o.o)
-    0x08005311   0x08005311   0x00000003   PAD
-    0x08005314   0x08005314   0x00000004   Data   RO         4708    .constdata          mc_w.l(ctype_o.o)
-    0x08005318   0x08005318   0x0000012c   Data   RO          763    .conststring        main.o
-    0x08005444   0x08005444   0x00000020   Data   RO         4740    Region$$Table       anon$$obj.o
+    0x080046c4   0x080046c4   0x00000508   Code   RO          759    i.main              main.o
+    0x08004bcc   0x08004bcc   0x00000020   Data   RO          636    .constdata          oled_s.o
+    0x08004bec   0x08004bec   0x00000020   Data   RO          637    .constdata          oled_s.o
+    0x08004c0c   0x08004c0c   0x00000020   Data   RO          638    .constdata          oled_s.o
+    0x08004c2c   0x08004c2c   0x00000020   Data   RO          639    .constdata          oled_s.o
+    0x08004c4c   0x08004c4c   0x000005f0   Data   RO          640    .constdata          oled_s.o
+    0x0800523c   0x0800523c   0x00000020   Data   RO          762    .constdata          main.o
+    0x0800525c   0x0800525c   0x00000012   Data   RO         1752    .constdata          stm32f1xx_hal_rcc.o
+    0x0800526e   0x0800526e   0x00000012   Data   RO         1844    .constdata          stm32f1xx_hal_rcc_ex.o
+    0x08005280   0x08005280   0x00000010   Data   RO         4316    .constdata          system_stm32f1xx.o
+    0x08005290   0x08005290   0x00000008   Data   RO         4317    .constdata          system_stm32f1xx.o
+    0x08005298   0x08005298   0x00000081   Data   RO         4707    .constdata          mc_w.l(ctype_o.o)
+    0x08005319   0x08005319   0x00000003   PAD
+    0x0800531c   0x0800531c   0x00000004   Data   RO         4708    .constdata          mc_w.l(ctype_o.o)
+    0x08005320   0x08005320   0x0000012c   Data   RO          763    .conststring        main.o
+    0x0800544c   0x0800544c   0x00000020   Data   RO         4740    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x08005464, Size: 0x00000dd8, Max: 0x00005000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800546c, Size: 0x00000dd8, Max: 0x00005000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x08005464   0x00000003   Data   RW           15    .data               bh1750.o
-    0x20000003   0x08005467   0x00000001   PAD
-    0x20000004   0x08005468   0x00000006   Data   RW          164    .data               bsp_esp01s.o
-    0x2000000a   0x0800546e   0x00000008   Data   RW          449    .data               sht30.o
-    0x20000012   0x08005476   0x00000002   PAD
-    0x20000014   0x08005478   0x00000040   Data   RW          764    .data               main.o
-    0x20000054   0x080054b8   0x0000000c   Data   RW         1589    .data               stm32f1xx_hal.o
-    0x20000060   0x080054c4   0x00000004   Data   RW         4318    .data               system_stm32f1xx.o
-    0x20000064   0x080054c8   0x00000004   Data   RW         4675    .data               mc_w.l(stdout.o)
-    0x20000068   0x080054cc   0x00000004   Data   RW         4683    .data               mc_w.l(errno.o)
+    0x20000000   0x0800546c   0x00000003   Data   RW           15    .data               bh1750.o
+    0x20000003   0x0800546f   0x00000001   PAD
+    0x20000004   0x08005470   0x00000006   Data   RW          164    .data               bsp_esp01s.o
+    0x2000000a   0x08005476   0x00000008   Data   RW          449    .data               sht30.o
+    0x20000012   0x0800547e   0x00000002   PAD
+    0x20000014   0x08005480   0x00000040   Data   RW          764    .data               main.o
+    0x20000054   0x080054c0   0x0000000c   Data   RW         1589    .data               stm32f1xx_hal.o
+    0x20000060   0x080054cc   0x00000004   Data   RW         4318    .data               system_stm32f1xx.o
+    0x20000064   0x080054d0   0x00000004   Data   RW         4675    .data               mc_w.l(stdout.o)
+    0x20000068   0x080054d4   0x00000004   Data   RW         4683    .data               mc_w.l(errno.o)
     0x2000006c        -       0x00000200   Zero   RW          163    .bss                bsp_esp01s.o
     0x2000026c        -       0x00000440   Zero   RW          760    .bss                main.o
     0x200006ac        -       0x00000030   Zero   RW          902    .bss                adc.o
@@ -2890,7 +2890,7 @@ Memory Map of the image
     0x20000730        -       0x00000048   Zero   RW          987    .bss                tim.o
     0x20000778        -       0x00000090   Zero   RW         1031    .bss                usart.o
     0x20000808        -       0x000001ac   Zero   RW         1218    .bss                flash_storage.o
-    0x200009b4   0x080054d0   0x00000004   PAD
+    0x200009b4   0x080054d8   0x00000004   PAD
     0x200009b8        -       0x00000020   Zero   RW         2295    .bss                stm32f1xx_hal_flash.o
     0x200009d8        -       0x00000400   Zero   RW            1    STACK               startup_stm32f103xb.o
 
@@ -2911,7 +2911,7 @@ Image component sizes
          0          0          0          0         84        196   i2c.o
         86          0          0          0          0        943   key.o
         56         16          0          0          0       1227   led.o
-      3828       1306        332         64       1088      36970   main.o
+      3836       1308        332         64       1088      36986   main.o
        114          0          0          0          0       2009   mq2.o
        874         34       1648          0          0       8378   oled_s.o
         24          6          0          0          0        466   pir_sensor.o
@@ -2938,7 +2938,7 @@ Image component sizes
        340         38          0          0        144       2791   usart.o
 
     ----------------------------------------------------------------------
-     17024       2948       2308        100       3436     633558   Object Totals
+     17032       2950       2308        100       3436     633574   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         34          0          0          3          4          0   (incl. Padding)
 
@@ -3009,15 +3009,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     19160       2996       2444        108       3436     626722   Grand Totals
-     19160       2996       2444        108       3436     626722   ELF Image Totals
-     19160       2996       2444        108          0          0   ROM Totals
+     19168       2998       2444        108       3436     626738   Grand Totals
+     19168       2998       2444        108       3436     626738   ELF Image Totals
+     19168       2998       2444        108          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                21604 (  21.10kB)
+    Total RO  Size (Code + RO Data)                21612 (  21.11kB)
     Total RW  Size (RW Data + ZI Data)              3544 (   3.46kB)
-    Total ROM Size (Code + RO Data + RW Data)      21712 (  21.20kB)
+    Total ROM Size (Code + RO Data + RW Data)      21720 (  21.21kB)
 
 ==============================================================================
 
