@@ -97,6 +97,27 @@ static uint8_t led = 0;
 static uint8_t security_mode = 0;
 static int security_val = 0;
 
+static uint8_t modify_mode = 0; // 0: Normal, 1: Temp, 2: Hum
+static int t_alert = 0;
+static int h_alert = 0;
+
+char mqtt_payload[512]; // Global buffer for MQTT publish
+char display_buffer[32]; // Global buffer for display formatting
+char modify_buffer[32];  // Global buffer for modify interface
+uint8_t key1_state, key2_state, key3_state; // Key scan states
+
+void Display_Modify_Interface(uint8_t mode) {
+    OLED_ShowString(1, 1, "Modify Alert");
+    
+    snprintf(modify_buffer, sizeof(modify_buffer), "%sTemp: %d", (mode == 1 ? ">" : " "), sys_config.tem_alert);
+    OLED_ShowString(2, 1, modify_buffer);
+    
+    snprintf(modify_buffer, sizeof(modify_buffer), "%sHum : %d", (mode == 2 ? ">" : " "), sys_config.hum_alert);
+    OLED_ShowString(3, 1, modify_buffer);
+    
+    OLED_ShowString(4, 1, "Save:Lng K1");
+}
+
 
 
 /* USER CODE END PV */
@@ -123,9 +144,9 @@ void Build_MQTT_Topics(void)
     else
     {
         // Fallback to defaults if config is missing
-        sprintf(MQTT_TOPIC_POST, "$sys/%s/%s/thing/property/post", "A0NJ2dZ1Bj", "lab001");
-        sprintf(MQTT_TOPIC_SET, "$sys/%s/%s/thing/property/set", "A0NJ2dZ1Bj", "lab001");
-        sprintf(MQTT_TOPIC_REPLY, "$sys/%s/%s/thing/property/set_reply", "A0NJ2dZ1Bj", "lab001");
+        sprintf(MQTT_TOPIC_POST, "$sys/%s/%s/thing/property/post", MQTT_USERNAME, MQTT_CLIENTID);
+        sprintf(MQTT_TOPIC_SET, "$sys/%s/%s/thing/property/set", MQTT_USERNAME, MQTT_CLIENTID);
+        sprintf(MQTT_TOPIC_REPLY, "$sys/%s/%s/thing/property/set_reply", MQTT_USERNAME, MQTT_CLIENTID);
     }
     printf("[MQTT] Topics Built:\r\n POST: %s\r\n SET: %s\r\n", MQTT_TOPIC_POST, MQTT_TOPIC_SET);
 }
@@ -220,7 +241,7 @@ int main(void)
         {
             lastDataSend = HAL_GetTick();
             Send_Data_to_OneNet();
-            Display_Sensor_Data();
+            if (modify_mode == 0) Display_Sensor_Data();
         }
 
         // 4. Handle MQTT disconnections
@@ -238,34 +259,107 @@ int main(void)
         }
         
         // 5. Security Mode & Config Logic
-        uint8_t k1 = Key_Scan(key1_GPIO_Port, key1_Pin);
-        if(k1 == KEY_SHORT_PRESS) // Enable Security
-        {
-            security_mode = 1;
-            OLED_Show16x16Icon(0, 48, security_icon_16x16); // Show icon at bottom left
-            printf("Security Mode ON\r\n");
-        }
-        else if(k1 == KEY_LONG_PRESS) // Enter Config Mode
-        {
-             printf("Enter Config Mode...\r\n");
-             OLED_Clear();
-             OLED_ShowString(1, 1, "Config Mode");
-             OLED_ShowString(2, 1, "SSID:STM32_Cfg");
-             OLED_ShowString(3, 1, "IP:192.168.4.1");
-             WIFI_Start_AP("STM32_Config", "12345678");
-             WIFI_Start_Server(8080);
-             while(1) { // Stuck in config mode until reboot
-                 Process_WIFI_RX();
-                 HAL_Delay(10);
-             }
-        }
+        key1_state = Key_Scan(key1_GPIO_Port, key1_Pin);
+        key2_state = Key_Scan(key2_GPIO_Port, key2_Pin);
+        key3_state = Key_Scan(key3_GPIO_Port, key3_Pin);
 
-        if(Key_Scan(key2_GPIO_Port, key2_Pin) == KEY_SHORT_PRESS) // Disable Security
+        if (modify_mode == 0)
         {
-            security_mode = 0;
-            OLED_Show16x16Icon(0, 48, blank_icon_16x16); // Clear icon
-            Buzzer_Off(); // Stop alarm if ringing
-            printf("Security Mode OFF\r\n");
+            // Normal Mode
+            if(key1_state == KEY_SHORT_PRESS) // Enable Security
+            {
+                security_mode = 1;
+                OLED_Show16x16Icon(0, 48, security_icon_16x16); // Show icon at bottom left
+                printf("Security Mode ON\r\n");
+            }
+            else if(key1_state == KEY_LONG_PRESS) // Enter Config Mode
+            {
+                 printf("Enter Config Mode...\r\n");
+                 OLED_Clear();
+                 OLED_ShowString(1, 1, "Config Mode");
+                 OLED_ShowString(2, 1, "SSID:STM32_Cfg");
+                 OLED_ShowString(3, 1, "IP:192.168.4.1");
+                 WIFI_Start_AP("STM32_Config", "12345678");
+                 WIFI_Start_Server(8080);
+                 while(1) { // Stuck in config mode until reboot
+                     Process_WIFI_RX();
+                     HAL_Delay(10);
+                 }
+            }
+
+            if(key2_state == KEY_SHORT_PRESS) // Disable Security
+            {
+                security_mode = 0;
+                OLED_Show16x16Icon(0, 48, blank_icon_16x16); // Clear icon
+                Buzzer_Off(); // Stop alarm if ringing
+                printf("Security Mode OFF\r\n");
+            }
+            
+            if (key3_state == KEY_LONG_PRESS) // Enter Alert Modify Mode
+            {
+                modify_mode = 1;
+                OLED_Clear();
+                printf("Enter Alert Modify Mode\r\n");
+            }
+            
+            // Alert Logic
+            if (env.temperature > sys_config.tem_alert || env.humidity > sys_config.hum_alert)
+            {
+                // Simple Alert Trigger
+                 if (GetBuzzerStatus() == 0) {
+									  //Buzzer_On();
+									 
+									printf("temp=%d, hum=%d, tem_alert=%d, hum_alert=%d\r\n",
+									(int)env.temperature,
+									(int) env.humidity,
+									sys_config.tem_alert,
+									sys_config.hum_alert);
+									
+								 }
+            }
+        }
+        else
+        {
+            // Modify Mode
+            if (key1_state == KEY_SHORT_PRESS)
+            {
+                if (modify_mode == 1) {
+                    if (sys_config.tem_alert < 100) sys_config.tem_alert++;
+                } else {
+                    if (sys_config.hum_alert < 100) sys_config.hum_alert++;
+                }
+            }
+            else if (key1_state == KEY_LONG_PRESS)
+            {
+                Flash_Write_Config(&sys_config);
+                modify_mode = 0;
+                OLED_Clear();
+                OLED_ShowString(1, 1, "Saved!");
+                HAL_Delay(1000);
+                OLED_Clear();
+                // Restore status icons
+                if(wifi_connected_flag) OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
+                if(mqtt_connected_flag) OLED_Show16x16Icon(90, 48, mqtt_icon_16x16);
+                if(security_mode) OLED_Show16x16Icon(0, 48, security_icon_16x16);
+                Display_Sensor_Data(); // Immediately refresh display
+                lastDataSend = 0; // Force immediate display update
+            }
+            
+            if (key2_state == KEY_SHORT_PRESS)
+            {
+                if (modify_mode == 1) {
+                    if (sys_config.tem_alert > 1) sys_config.tem_alert--;
+                } else {
+                    if (sys_config.hum_alert > 1) sys_config.hum_alert--;
+                }
+            }
+            
+            if (key3_state == KEY_SHORT_PRESS)
+            {
+                modify_mode = (modify_mode == 1) ? 2 : 1;
+            }
+            
+            Display_Modify_Interface(modify_mode);
         }
 
         if(security_mode)
@@ -275,7 +369,7 @@ int main(void)
             // Check PIR: High = Motion.
             if(HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin) == GPIO_PIN_SET || PIR_IsHumanDetected())
             {
-                //Buzzer_On();
+                Buzzer_On();
 							  printf("[DEBUG] isBuzzer_On door_value: %d, Human: %d\r\n", HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin), PIR_IsHumanDetected());
 			
             }
@@ -391,41 +485,45 @@ void Send_Data_to_OneNet(void)
         env.humidity = 0;
     }
     if (BH1750_ReadLux(&hi2c1, &lux) != HAL_OK)
-        lux = 0;
+        lux = 1;
     human = PIR_IsHumanDetected();
     gas_v = MQ2_ReadPercentage(&hadc1);
     buzzer = GetBuzzerStatus();
     led = GetLedState();
 
-    static char payload[512];
-
-    snprintf(payload, sizeof(payload),
+    snprintf(mqtt_payload, sizeof(mqtt_payload),
              "{\"id\":\"123\",\"params\":{"
              "\"Temp\":{\"value\":%d},"
              "\"Hum\":{\"value\":%d},"
              "\"Alarm\":{\"value\":%s},"
              "\"LED\":{\"value\":%s},"
              "\"gas\":{\"value\":%d},"
+             "\"lux\":{\"value\":%d},"
              "\"human\":{\"value\":%s},"
              "\"door\":{\"value\":%s},"
              "\"RELAY1\":{\"value\":%s},"
              "\"RELAY2\":{\"value\":%s},"
-             "\"security\":{\"value\":%s}"
+             "\"security\":{\"value\":%s},"
+             "\"tem_alert\":{\"value\":%d},"
+             "\"hum_alert\":{\"value\":%d}"
              "}}",
              (int)env.temperature,
              (int)env.humidity,
              (buzzer ? "true" : "false"), 
              (led ? "true" : "false"),    
              (int)gas_v,
+             (int)lux,
              (human ? "true" : "false"),
              HAL_GPIO_ReadPin(door_GPIO_Port, door_Pin) == GPIO_PIN_SET? "true" : "false",
              (GetRelayState(1) ? "true" : "false"),
              (GetRelayState(2) ? "true" : "false"),
-             security_mode ? "true" : "false"
+             security_mode ? "true" : "false",
+             sys_config.tem_alert,
+             sys_config.hum_alert
              );
 
-    WIFI_MQTT_Publish(MQTT_TOPIC_POST, payload, 0);
-    printf("Payload: %s\r\n", payload);
+    WIFI_MQTT_Publish(MQTT_TOPIC_POST, mqtt_payload, 0);
+    printf("Payload: %s\r\n", mqtt_payload);
     // OLED_ShowNum(1, 1, (int)env.temperature, 5);
     // OLED_ShowNum(2, 1, (int)env.humidity, 5);
 }
@@ -491,7 +589,10 @@ void Process_OneNet_Command(MQTT_MESSAGE *msg)
     alarm_value = get_param_value(params_start, "Alarm");
     relay1_value = get_param_value(params_start, "RELAY1");
     relay2_value = get_param_value(params_start, "RELAY2");
+    relay2_value = get_param_value(params_start, "RELAY2");
     security_val = get_param_value(params_start, "security");
+    t_alert = get_param_value(params_start, "tem_alert");
+    h_alert = get_param_value(params_start, "hum_alert");
 
     *params_end = '}';
 
@@ -561,6 +662,27 @@ void Process_OneNet_Command(MQTT_MESSAGE *msg)
 				Relay2_Off();
 			}
     }
+
+    if (t_alert > 0)
+    {
+        // Limit to 1-100 range for OneNet platform compatibility
+        if (t_alert >= 1 && t_alert <= 100) {
+            sys_config.tem_alert = t_alert;
+            printf("Set tem_alert: %d\r\n", t_alert);
+        } else {
+            printf("Invalid tem_alert: %d (must be 1-100)\r\n", t_alert);
+        }
+    }
+    if (h_alert > 0)
+    {
+        // Limit to 1-100 range for OneNet platform compatibility
+        if (h_alert >= 1 && h_alert <= 100) {
+            sys_config.hum_alert = h_alert;
+            printf("Set hum_alert: %d\r\n", h_alert);
+        } else {
+            printf("Invalid hum_alert: %d (must be 1-100)\r\n", h_alert);
+        }
+    }
  
 
     char reply_payload[128];
@@ -588,28 +710,28 @@ void extract_json_id(const char *json, char *id_buf, size_t size)
         id_buf[i++] = *p++;
     id_buf[i] = '\0';
 }
-  void Display_Sensor_Data(void)
-  {
-      char buffer[32];
+void Display_Sensor_Data(void)
+{
+    // Display temperature (pad to 13 chars to clear modify mode text)
+    snprintf(display_buffer, sizeof(display_buffer), "T:%d.C        ", (int)env.temperature);
+    OLED_ShowString(1, 1, display_buffer);
 
-      // Clear OLED display
-      //OLED_Clear();
+    // Display humidity
+    snprintf(display_buffer, sizeof(display_buffer), "H:%d%%         ", (int)env.humidity);
+    OLED_ShowString(2, 1, display_buffer);
 
-      // Display temperature
-      OLED_ShowString(1, 1, "Temp:");
-      snprintf(buffer, sizeof(buffer), "%d.C", (int)env.temperature);
-      OLED_ShowString(1, 6, buffer);
-
-      // Display humidity
-      OLED_ShowString(2, 1, "Hum:");
-      snprintf(buffer, sizeof(buffer), "%d%%", (int)env.humidity);
-      OLED_ShowString(2, 5, buffer);
-
-      // Display light
-      OLED_ShowString(3, 1, "Light:");
-      snprintf(buffer, sizeof(buffer), "%dLux", (int)lux);
-      OLED_ShowString(3, 7, buffer);
-  }
+    // Display light
+    snprintf(display_buffer, sizeof(display_buffer), "L:%dLux       ", (int)lux);
+    OLED_ShowString(3, 1, display_buffer);
+    
+    // Clear Line 4 - 11 chars to remove "Save:Lng K1" (88px, still preserves icons at X=90+)
+    OLED_ShowString(4, 1, "           ");
+    
+    // Restore status icons after clearing
+    if(security_mode) OLED_Show16x16Icon(0, 48, security_icon_16x16);
+    if(wifi_connected_flag) OLED_Show16x16Icon(112, 48, wifi_icon_16x16);
+    if(mqtt_connected_flag) OLED_Show16x16Icon(90, 48, mqtt_icon_16x16);
+}
 
 void extract_json_string(const char *json, const char *key, char *out_buf, size_t max_len)
 {

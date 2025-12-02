@@ -21,6 +21,8 @@ void Flash_Read_Config(void)
     {
         // No valid config, set defaults or empty
         memset(&sys_config, 0, sizeof(System_Config_t));
+				sys_config.tem_alert = 40;
+				sys_config.hum_alert = 80;
         printf("[Flash] No valid config found.\r\n");
     }
 }

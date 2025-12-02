@@ -68,7 +68,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x67514D13)
-I (../Core/Inc/flash_storage.h)(0x69200842)
+I (../Core/Inc/flash_storage.h)(0x692E4746)
 I (E:\application\keil\mdk\ARM\ARMCC\include\string.h)(0x599ECD2C)
 I (E:\application\keil\mdk\ARM\ARMCC\include\stdlib.h)(0x599ECD2C)
 I (E:\application\keil\mdk\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
@@ -305,7 +305,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x67514D13)
-F (..\Core\Src\oled_s.c)(0x6903525F)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\oled_s.o --omf_browse jin_project\oled_s.crf --depend jin_project\oled_s.d)
+F (..\Core\Src\oled_s.c)(0x692E4768)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\oled_s.o --omf_browse jin_project\oled_s.crf --depend jin_project\oled_s.d)
 I (../Core/Inc/OLED_Font.h)(0x69207ED2)
 I (../Core/Inc/gpio.h)(0x68F86F62)
 I (../Core/Inc/main.h)(0x6900D8D4)
@@ -339,7 +339,7 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x67514D13)
-F (../Core/Src/main.c)(0x6921761E)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\main.o --omf_browse jin_project\main.crf --depend jin_project\main.d)
+F (../Core/Src/main.c)(0x692E477A)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\main.o --omf_browse jin_project\main.crf --depend jin_project\main.d)
 I (../Core/Inc/main.h)(0x6900D8D4)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x67514D13)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69032B79)
@@ -390,7 +390,7 @@ I (../Core/Inc/soft_i2c.h)(0x69009D61)
 I (../Core/Inc/oled_s.h)(0x69033A93)
 I (../Core/Inc/relay.h)(0x691F373B)
 I (../Core/Inc/key.h)(0x69200044)
-I (../Core/Inc/flash_storage.h)(0x69200842)
+I (../Core/Inc/flash_storage.h)(0x692E4746)
 F (../Core/Src/gpio.c)(0x691FF069)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\gpio.o --omf_browse jin_project\gpio.crf --depend jin_project\gpio.d)
 I (../Core/Inc/gpio.h)(0x68F86F62)
 I (../Core/Inc/main.h)(0x6900D8D4)
@@ -656,8 +656,8 @@ I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h)(0x67514D13)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h)(0x67514D13)
-F (..\Core\Src\flash_storage.c)(0x69200843)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\flash_storage.o --omf_browse jin_project\flash_storage.crf --depend jin_project\flash_storage.d)
-I (../Core/Inc/flash_storage.h)(0x69200842)
+F (..\Core\Src\flash_storage.c)(0x692E477D)(--c99 -c --cpu Cortex-M3 -D__MICROLIB -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc -I ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I ../Drivers/CMSIS/Include-I.\RTE\_jin_project-IE:\application\keil\mdk\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Core\Include-IE:\application\keil\mdk\ARM\PACK\Keil\STM32F1xx_DFP\2.4.1\Device\Include-D__UVISION_VERSION="538" -D_RTE_ -DSTM32F10X_MD -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F103xB-o jin_project\flash_storage.o --omf_browse jin_project\flash_storage.crf --depend jin_project\flash_storage.d)
+I (../Core/Inc/flash_storage.h)(0x692E4746)
 I (../Core/Inc/main.h)(0x6900D8D4)
 I (../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h)(0x67514D13)
 I (../Core/Inc/stm32f1xx_hal_conf.h)(0x69032B79)

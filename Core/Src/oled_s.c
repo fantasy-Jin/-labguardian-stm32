@@ -121,14 +121,15 @@ void OLED_Clear(void)
 void OLED_ShowChar(uint8_t Line, uint8_t Column, char Char)
 {
     uint8_t c = Char - ' ';
-    OLED_SetCursor((Line - 1) * 2, (Column - 1) * 8);
+    OLED_SetCursor((Line - 1) * 2, (Column - 1) * 8 + 2);
     for (uint8_t i = 0; i < 8; i++)
         OLED_WriteData(OLED_F8x16[c][i]);
 
-    OLED_SetCursor((Line - 1) * 2 + 1, (Column - 1) * 8);
+    OLED_SetCursor((Line - 1) * 2 + 1, (Column - 1) * 8 + 2);
     for (uint8_t i = 0; i < 8; i++)
         OLED_WriteData(OLED_F8x16[c][i + 8]);
 }
+
 
 /*-----------------------------------------------------------
   显示字符串
